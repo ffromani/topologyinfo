@@ -1,0 +1,6 @@
+github.com/fromanirh/cpuset v0.0.0-20200530094055-76ce61745438 h1:MPtmR7mE71JGqkiaC2vRR+rW53FgHWLNiI3yvFaJRK8=
+github.com/fromanirh/cpuset v0.0.0-20200530094055-76ce61745438/go.mod h1:9lEAgXAusbccWNAvnt81P76p0g+dCgm1AR91DlpDgy0=
+github.com/google/go-cmp v0.5.3 h1:x95R7cp+rSeeqAMI2knLtQ0DKlaBhv2NrtrOvafPHRo=
+github.com/google/go-cmp v0.5.3/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
+golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 h1:E7g+9GITq07hpfrRu66IVDexMakfv52eLZ2CXBWiKr4=
+golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
