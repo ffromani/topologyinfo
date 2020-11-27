@@ -96,4 +96,16 @@ func TestCPUsSingleNuma(t *testing.T) {
 	if !cmp.Equal(cpus.NUMANodeCPUs[0], testingCpus) {
 		t.Errorf("not all cpus on NUMA#0: %v vs %v", cpus.NUMANodeCPUs[0], testingCpus)
 	}
+
+	nodeID, ok := cpus.GetNodeIDForCPU(3)
+	if !ok {
+		t.Errorf("unexpected failure")
+	}
+	if nodeID != 0 {
+		t.Errorf("cannot find the right NUMA node for cpu")
+	}
+
+	if _, ok := cpus.GetNodeIDForCPU(1023); ok {
+		t.Errorf("unexpected success")
+	}
 }

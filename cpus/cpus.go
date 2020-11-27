@@ -40,9 +40,19 @@ type CPUs struct {
 	cpuID2NUMANode map[int]int // CPU ID -> NUMA node ID (reverse of NUMANodeCPUs)
 }
 
-func (c CPUs) GetNodeIDForCPU(cpuID int) (int, bool) {
+func (c *CPUs) GetNodeIDForCPU(cpuID int) (int, bool) {
 	n, ok := c.cpuID2NUMANode[cpuID]
 	return n, ok
+}
+
+func (c *CPUs) Update() *CPUs {
+	c.cpuID2NUMANode = make(map[int]int)
+	for nodeID, cpuIDs := range c.NUMANodeCPUs {
+		for _, cpuID := range cpuIDs {
+			c.cpuID2NUMANode[cpuID] = nodeID
+		}
+	}
+	return c
 }
 
 // NewCPUs extracts the CPU information from a given sysfs-like path
@@ -98,7 +108,6 @@ func NewCPUs(sysfsPath string) (*CPUs, error) {
 		packages[physPackageID] = cpusPerPhysPkg
 	}
 
-	cpuID2NUMANode := make(map[int]int)
 	numaNodeCPUs := make(map[int]CPUIdList)
 	for _, node := range nodes {
 		cpus, err := sys.ForNode(node).ReadList("cpulist")
@@ -106,13 +115,9 @@ func NewCPUs(sysfsPath string) (*CPUs, error) {
 			return nil, err
 		}
 		numaNodeCPUs[node] = cpus
-
-		for _, cpu := range cpus {
-			cpuID2NUMANode[cpu] = node
-		}
 	}
 
-	return &CPUs{
+	cpus := &CPUs{
 		Present:      present,
 		Online:       online,
 		CoreCPUs:     coreCPUs,
@@ -120,7 +125,6 @@ func NewCPUs(sysfsPath string) (*CPUs, error) {
 		Packages:     packageIds,
 		NUMANodes:    nodes,
 		NUMANodeCPUs: numaNodeCPUs,
-		// internal helpers
-		cpuID2NUMANode: cpuID2NUMANode,
-	}, nil
+	}
+	return cpus.Update(), nil
 }
